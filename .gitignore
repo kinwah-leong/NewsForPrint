@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Environment and local configuration
+.env
+.env.*
+!.env.example
+
+# Runtime data and generated reports
+data/
+reports/
+*.log
+
+# Local tooling and OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+

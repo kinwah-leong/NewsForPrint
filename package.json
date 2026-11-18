@@ -1,0 +1,9 @@
+{
+  "name": "newstime-printer-intelligence",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dashboard": "node scripts/serve-dashboard.mjs",
+    "fetch-apps": "node scripts/fetch-app-updates.mjs"
+  }
+}

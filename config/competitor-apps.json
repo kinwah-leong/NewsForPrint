@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "updatedAt": "2026-11-18",
+  "apps": [
+    {
+      "key": "flashtoy",
+      "name": "FlashToy / 闪电打印",
+      "developer": "Milestone Intelligent Electronics (Guangzhou) Co., Ltd.",
+      "productTypes": ["thermal-tattoo"],
+      "ios": { "id": "6738379656", "country": "cn" },
+      "android": { "package": "com.flashlabel.toy" },
+      "priority": "P0"
+    },
+    {
+      "key": "fun-tattoo",
+      "name": "Fun Tattoo",
+      "developer": "Shenzhen Frog To Sea Technology Co., Ltd.",
+      "productTypes": ["thermal-tattoo"],
+      "ios": { "id": "6544783958", "country": "cn" },
+      "android": { "package": "com.itattoo" },
+      "priority": "P0"
+    },
+    {
+      "key": "tattoo-go",
+      "name": "Tattoo Go",
+      "developer": "Zhuhai Xinye Electronic Technology",
+      "productTypes": ["thermal-tattoo"],
+      "ios": { "id": "6737122641", "country": "cn" },
+      "android": { "package": "com.vida.tattoogo" },
+      "priority": "P0"
+    },
+    {
+      "key": "nada-print",
+      "name": "Nada Print",
+      "developer": "Zhuhai Jiuyin Technology Co., Ltd.",
+      "productTypes": ["thermal-a4", "label"],
+      "ios": { "id": "6739829512", "country": "us" },
+      "android": { "package": "com.zhuhaijiuyin.print" },
+      "priority": "P0"
+    },
+    {
+      "key": "jadens-printer",
+      "name": "Jadens Printer",
+      "developer": "JADENS COMPANY LIMITED",
+      "productTypes": ["thermal-a4", "label"],
+      "ios": { "id": "1615277532", "country": "us" },
+      "android": { "package": "com.jdprint" },
+      "priority": "P0"
+    },
+    {
+      "key": "aiyin",
+      "name": "AiYin / 爱印",
+      "developer": "Xiamen AiYin Technology Co., Ltd.",
+      "productTypes": ["thermal-a4", "label", "photo", "mini-inkjet"],
+      "ios": { "id": "6476474665", "country": "cn" },
+      "android": { "package": "com.aiyin.metaprint" },
+      "priority": "P0"
+    },
+    {
+      "key": "rongta",
+      "name": "RONGTA",
+      "developer": "Xiamen Rongta Technology Co., Ltd.",
+      "productTypes": ["thermal-a4", "thermal-mini", "label"],
+      "ios": { "id": "6469987269", "country": "cn" },
+      "android": { "package": "com.rongta.pn81" },
+      "priority": "P0"
+    },
+    {
+      "key": "zhiwuya",
+      "name": "知无涯",
+      "developer": "Shenzhen Bainiu Technology Co., Ltd.",
+      "productTypes": ["thermal-mini"],
+      "ios": { "id": "1539625064", "country": "cn" },
+      "android": { "package": "com.frogtosea.zhiwuya" },
+      "priority": "P0"
+    },
+    {
+      "key": "fun-print",
+      "name": "Fun Print / 喵学王",
+      "developer": "Shenzhen Miaoxuewang Technology Co., Ltd.",
+      "productTypes": ["thermal-mini"],
+      "ios": { "id": "1592740556", "country": "cn" },
+      "android": { "package": "com.fun.mxw", "verification": "needs-official-confirmation" },
+      "priority": "P0"
+    },
+    {
+      "key": "herelabel",
+      "name": "HereLabel",
+      "developer": "Xiamen Hanin Co., Ltd.",
+      "productTypes": ["thermal-mini", "label"],
+      "ios": { "id": "1561322584", "country": "us" },
+      "android": { "package": "com.hprt.hmark.intl" },
+      "priority": "P0"
+    },
+    {
+      "key": "heyphoto",
+      "name": "汉印美照 / HeyPhoto",
+      "developer": "Xiamen Hanin Co., Ltd.",
+      "productTypes": ["photo-dye-sub"],
+      "models": ["CP4100"],
+      "ios": { "id": "1451152779", "country": "cn" },
+      "android": { "package": "com.prt.colorprt.release" },
+      "priority": "P0"
+    },
+    {
+      "key": "jiyin-photo",
+      "name": "极印Photo",
+      "developer": "Hannto Technology Co., Ltd.",
+      "productTypes": ["photo-dye-sub", "photo-thermal", "print-and-cut"],
+      "models": ["S1", "PixCut S1"],
+      "ios": { "id": "1568005162", "country": "cn" },
+      "android": { "package": "com.hannto.fennel.overseas" },
+      "priority": "P0"
+    },
+    {
+      "key": "cricut-design-space",
+      "name": "Cricut Design Space",
+      "developer": "Cricut, Inc.",
+      "productTypes": ["photo-dye-sub", "print-and-cut", "label"],
+      "ios": { "id": "749471884", "country": "us" },
+      "android": { "package": "com.cricut.designspace" },
+      "priority": "P0"
+    }
+  ]
+}

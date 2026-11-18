@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <meta http-equiv="refresh" content="0; url=./overview.html" />
+    <title>NewsTime · 打印行业情报</title>
+    <script>location.replace("./overview.html");</script>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="NewsTime 首页">
+        <span class="brand-mark">NT</span>
+        <span><strong>NewsTime</strong><small>打印行业情报</small></span>
+      </a>
+      <nav aria-label="主导航">
+        <a class="active" href="#updates">今日情报</a>
+        <a href="#hardware">硬件新品</a>
+        <a href="#ai-hardware">AI＋硬件</a>
+        <a href="#crowdfunding">众筹雷达</a>
+        <a href="#apps">竞品App</a>
+        <a href="#playbook">趋势研判</a>
+      </nav>
+      <span class="trial-status"><i></i>试行监控中</span>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">PRODUCT INTELLIGENCE · DAILY</p>
+          <h1>今天，打印产品<br />发生了什么？</h1>
+          <p class="hero-copy">聚焦新兴打印品牌的 App 更新、功能玩法与产品变化。按首次公开时间判断新鲜度，所有结论保留原文证据。</p>
+        </div>
+        <div class="hero-summary">
+          <p id="todayLabel">今日概览</p>
+          <strong id="signalCount">0</strong>
+          <span id="signalCountLabel">条14天内高价值信号</span>
+          <dl>
+            <div><dt>监控App</dt><dd>13</dd></div>
+            <div><dt>产品线</dt><dd>4</dd></div>
+            <div><dt>已降级</dt><dd id="excludedCount">0</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="toolbar" aria-label="情报筛选">
+        <div class="filter-groups">
+          <div class="filters freshness-filters" id="freshnessFilters" aria-label="时效范围"></div>
+          <div class="filters" id="filters" aria-label="产品分类"></div>
+        </div>
+        <label class="search">
+          <span>搜索</span>
+          <input id="searchInput" type="search" placeholder="品牌、App、功能或场景" />
+        </label>
+      </section>
+
+      <section class="section-heading" id="updates">
+        <div><p class="eyebrow">LATEST SIGNALS</p><h2>竞品更新与功能信号</h2></div>
+        <p>首次公开超过 90 天自动归档；重复文案不刷新消息年龄，常规修复和无信息更新自动降级。</p>
+      </section>
+
+      <section class="content-grid">
+        <div class="signal-list" id="signalList"></div>
+        <aside id="playbook">
+          <div class="aside-heading"><p class="eyebrow">ANALYST SYNTHESIS · 非官方原话</p><h2>趋势研判</h2></div>
+          <div id="playbookList"></div>
+        </aside>
+      </section>
+
+      <section class="hardware-section" id="hardware">
+        <div class="section-heading compact">
+          <div><p class="eyebrow">HARDWARE LAUNCHES · 90 DAYS</p><h2>硬件新品与产品更新</h2></div>
+          <p>收录近90天官方发布；传统大厂仅跟踪硬件，不分析其配套软件功能。</p>
+        </div>
+        <div class="hardware-grid" id="hardwareGrid"></div>
+      </section>
+
+      <section class="ai-hardware-section" id="ai-hardware">
+        <div class="section-heading compact">
+          <div><p class="eyebrow">AI-NATIVE DEVICES</p><h2>AI＋硬件观察</h2></div>
+          <p>聚焦办公、学习、玩具和平板：跟踪AI录音卡、墨水屏、拍学/学习机、陪伴玩具与AI平板；暂不纳入眼镜、耳机和安防。</p>
+        </div>
+        <div class="scope-strip" aria-label="AI硬件监控范围">
+          <span>办公</span><span>学习</span><span>玩具</span><span>平板</span>
+          <small>排除：AI眼镜 · AI耳机 · 安防</small>
+        </div>
+        <div class="ai-product-grid" id="aiProductGrid"></div>
+        <div class="source-heading">
+          <div><p class="eyebrow">SOURCE MAP</p><h3>值得长期关注的科技网站</h3></div>
+          <p>媒体负责发现线索，官方来源负责最终核验。</p>
+        </div>
+        <div class="source-grid" id="aiSourceGrid"></div>
+      </section>
+
+      <section class="crowdfunding-section" id="crowdfunding">
+        <div class="section-heading compact">
+          <div><p class="eyebrow">KICKSTARTER · OVERSEAS CROWDFUNDING</p><h2>海外众筹雷达</h2></div>
+          <p>跟踪打印科技与办公、学习、玩具、平板类创新硬件。众筹成功不等于量产交付，状态数据均标记采集日期。</p>
+        </div>
+        <div class="crowdfunding-summary" id="crowdfundingSummary"></div>
+        <div class="crowdfunding-grid" id="crowdfundingGrid"></div>
+      </section>
+
+      <section class="apps-section" id="apps">
+        <div class="section-heading compact">
+          <div><p class="eyebrow">WATCHLIST</p><h2>竞品 App 监控池</h2></div>
+          <p>版本统计口径：iOS指定地区，2025-11-18至2026-11-18；“≥25”表示达到Apple公开历史上限。</p>
+        </div>
+        <div class="app-grid" id="appGrid"></div>
+      </section>
+    </main>
+
+    <footer>
+      <span>NewsTime · 打印行业产品情报试行版</span>
+      <span>数据范围：公开商店、官网、帮助中心与公开社媒</span>
+    </footer>
+
+    <script src="./sample-data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta http-equiv="refresh" content="0; url=./overview.html" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <title>NewsTime · 正在进入情报站</title>
+    <script>location.replace("./overview.html");</script>
+    <link rel="stylesheet" href="./dashboard.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <a class="brand" href="#overview" aria-label="NewsTime 首页">
+          <span class="brand-mark">NT</span>
+          <span><strong>NewsTime</strong><small>打印行业情报站</small></span>
+        </a>
+        <nav class="side-nav" aria-label="情报站导航">
+          <section>
+            <p>竞品及行业</p>
+            <a class="active" href="#overview"><i>⌁</i><span>热点</span><b id="navSignalCount">0</b></a>
+            <a href="#playbook"><i>↗</i><span>趋势研判</span></a>
+            <a href="#products"><i>▦</i><span>各类型产品信息</span></a>
+            <a href="#hardware"><i>◇</i><span>硬件新品与更新</span></a>
+            <a href="#apps"><i>◫</i><span>竞品 App 监控</span></a>
+          </section>
+          <section>
+            <p>AI 硬件</p>
+            <a href="#ai-hardware"><i>✦</i><span>AI＋硬件观察</span></a>
+            <a href="#sources"><i>◎</i><span>长期关注网站</span></a>
+          </section>
+          <section>
+            <p>海外众筹雷达</p>
+            <a href="#crowdfunding"><i>K</i><span>Kickstarter 资讯</span><em>NEW</em></a>
+          </section>
+        </nav>
+        <div class="sidebar-foot">
+          <span><i></i>数据监控运行中</span>
+          <small>数据截点：2026-11-18</small>
+          <a href="../docs/data-quality.md">数据质量规则 →</a>
+        </div>
+      </aside>
+
+      <div class="workspace">
+        <header class="workspace-header">
+          <button class="menu-toggle" id="menuToggle" type="button" aria-label="打开导航">☰</button>
+          <div><p class="eyebrow">PRODUCT INTELLIGENCE · DAILY</p><h1>打印产品情报</h1></div>
+          <label class="global-search"><span>⌕</span><input id="searchInput" type="search" placeholder="搜索品牌、App、功能或场景" /><kbd>/</kbd></label>
+        </header>
+
+        <main>
+          <section class="overview-section anchor-section" id="overview">
+            <div class="page-intro">
+              <div><p class="eyebrow">DAILY BRIEF · 11月18日</p><h2>热点</h2><p>只展示可回到官方原文核验的有效信号。首次公开时间决定新鲜度，重复文案不会刷新消息年龄。</p></div>
+              <div class="overview-stats">
+                <div><strong id="signalCount">0</strong><span id="signalCountLabel">14天内信号</span></div>
+                <div><strong>13</strong><span>竞品 App</span></div>
+                <div><strong>3</strong><span>情报板块</span></div>
+                <div><strong id="excludedCount">0</strong><span>已降级活动</span></div>
+              </div>
+            </div>
+            <div class="hotspot-panel">
+              <div class="panel-title"><span><i></i>当前热点</span><small id="todayLabel">今日数据截点</small></div>
+              <ol id="hotspotList"></ol>
+            </div>
+            <div class="toolbar" aria-label="情报筛选">
+              <div class="filter-groups"><div class="filters freshness-filters" id="freshnessFilters"></div><div class="filters" id="filters"></div></div>
+              <span class="quality-note">仅保留高价值且可核验资讯</span>
+            </div>
+            <div class="section-heading" id="updates"><div><p class="eyebrow">LATEST SIGNALS</p><h2>竞品更新与功能信号</h2></div><p>官方说明、首次公开日期、情报解读和原文证据集中展示。</p></div>
+            <div class="signal-list" id="signalList"></div>
+          </section>
+
+          <section class="section-block anchor-section" id="playbook">
+            <div class="section-heading"><div><p class="eyebrow">ANALYST SYNTHESIS · 非官方原话</p><h2>趋势研判</h2></div><p>两条以上独立证据支持，并显示置信度与依据链接。</p></div>
+            <div class="playbook-grid" id="playbookList"></div>
+          </section>
+
+          <section class="section-block anchor-section" id="products">
+            <div class="section-heading"><div><p class="eyebrow">PRODUCT LANDSCAPE</p><h2>各类型产品信息</h2></div><p>按产品线梳理监控对象、近期信号和重点能力。</p></div>
+            <div class="product-overview-grid" id="productOverviewGrid"></div>
+          </section>
+
+          <section class="section-block anchor-section" id="hardware">
+            <div class="section-heading"><div><p class="eyebrow">HARDWARE LAUNCHES · 90 DAYS</p><h2>硬件新品与产品更新</h2></div><p>传统大厂只跟踪硬件，不分析配套软件。</p></div>
+            <div class="hardware-grid" id="hardwareGrid"></div>
+          </section>
+
+          <section class="section-block anchor-section" id="apps">
+            <div class="section-heading"><div><p class="eyebrow">WATCHLIST</p><h2>竞品 App 监控</h2></div><p>版本、发布日期、官方说明与近12月更新次数。</p></div>
+            <div class="app-grid" id="appGrid"></div>
+          </section>
+
+          <section class="section-block anchor-section" id="ai-hardware">
+            <div class="section-heading"><div><p class="eyebrow">AI-NATIVE DEVICES</p><h2>AI＋硬件观察</h2></div><p>聚焦办公、学习、玩具和平板；暂不纳入AI眼镜、耳机和安防。</p></div>
+            <div class="scope-strip"><span>办公</span><span>学习</span><span>玩具</span><span>平板</span><small>排除：AI眼镜 · AI耳机 · 安防</small></div>
+            <div class="ai-product-grid" id="aiProductGrid"></div>
+          </section>
+
+          <section class="section-block anchor-section" id="sources">
+            <div class="section-heading"><div><p class="eyebrow">SOURCE MAP</p><h2>值得长期关注的科技网站</h2></div><p>媒体发现线索，品牌官网和官方Newsroom最终核验。</p></div>
+            <div class="source-grid" id="aiSourceGrid"></div>
+          </section>
+
+          <section class="section-block anchor-section" id="crowdfunding">
+            <div class="section-heading"><div><p class="eyebrow">KICKSTARTER · OVERSEAS CROWDFUNDING</p><h2>Kickstarter 资讯</h2></div><p>打印科技及办公、学习、玩具、平板类创新硬件。</p></div>
+            <div class="crowdfunding-summary" id="crowdfundingSummary"></div>
+            <div class="crowdfunding-grid" id="crowdfundingGrid"></div>
+          </section>
+        </main>
+        <footer><span>NewsTime · 打印行业产品情报试行版</span><span>公开商店、官网、帮助中心、公开社媒与Kickstarter</span></footer>
+      </div>
+    </div>
+    <script src="./sample-data.js"></script>
+    <script src="./dashboard.js"></script>
+  </body>
+</html>

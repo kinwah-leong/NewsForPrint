@@ -10,7 +10,7 @@ NewsForPrint 是面向打印机产品、软件和行业研究的轻量情报站�
 
 - 热点：展示近 14 天高价值更新和产品信号。
 - 趋势研判：至少使用两条独立证据形成方向判断，并与官方事实分开呈现。
-- 功能玩法推荐：整理近期出现的用户操作链路、使用场景和产品价值。
+- 功能玩法推荐：同时整理打印竞品玩法与跨行业文生图、图生图、可控编辑灵感，并保留官方来源。
 - 硬件新品与更新：跟踪打印硬件、介质、结构与上市信息。
 - 技术参数与路线：比较热升华、UV、3D 打印等技术路线及关键参数。
 - 专利／认证／供应链：展示竞品主体覆盖进度、近三年首批专利事件和核验状态。
@@ -18,6 +18,8 @@ NewsForPrint 是面向打印机产品、软件和行业研究的轻量情报站�
 - AI＋硬件：关注办公、学习、玩具和平板场景。
 - Kickstarter 雷达：跟踪打印科技和代表性创新硬件项目。
 - 原始证据：正式情报保留首次公开日期、原文摘录、来源链接与核验状态。
+- 历史回顾：所有菜单统一提供历史入口，按时间查看当前、归档、降级和已结束记录。
+- 追加式归档：自动采集事件写入 NDJSON 流水，不用新快照覆盖旧数据。
 
 ## 监控范围
 
@@ -70,10 +72,12 @@ NewsForPrint/
 ├─ config/
 │  └─ competitor-apps.json       # 竞品 App 配置
 ├─ docs/
-│  └─ data-quality.md            # 准确性、时效性和发布规则
+│  ├─ data-quality.md            # 准确性、时效性和发布规则
+│  └─ history-archive.md         # 历史流水结构与补录方式
 ├─ scripts/
 │  ├─ serve-dashboard.mjs        # 本地/局域网页面服务
 │  ├─ fetch-app-updates.mjs      # Apple Lookup API 采集
+│  ├─ append-history-event.mjs   # 通用历史事件追加工具
 │  └─ audit-app-store.ps1        # App Store 辅助审计
 ├─ web/
 │  ├─ overview.html              # 热点入口
@@ -142,9 +146,10 @@ npm run fetch-apps
 data/app-updates/latest.json
 data/app-updates/<本轮时间>.json
 reports/app-updates-latest.md
+data/history/events.ndjson
 ```
 
-首次运行会把所有 App 视为首次收录；后续运行只记录版本号、发布时间或更新说明发生变化的 App。抓取失败时会保留上一轮快照并写入失败记录。
+首次运行会把所有 App 视为首次收录；后续运行只记录版本号、发布时间或更新说明发生变化的 App。抓取失败时会保留上一轮快照并写入失败记录。版本变化与抓取失败还会追加到统一历史流水，字段说明见 [docs/history-archive.md](docs/history-archive.md)。
 
 ## 当前数据状态
 

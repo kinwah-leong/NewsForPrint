@@ -45,6 +45,20 @@ document.querySelector("#app").innerHTML = shellTemplate();
 const content = document.querySelector("#pageContent");
 renderCurrentPage();
 setupCommonEvents();
+alignHeaderToContent();
+window.addEventListener("resize", alignHeaderToContent);
+new ResizeObserver(alignHeaderToContent).observe(document.querySelector(".page-main"));
+
+function alignHeaderToContent() {
+  const header = document.querySelector(".workspace-header");
+  const main = document.querySelector(".page-main");
+  if (!header || !main) return;
+  const bounds = header.getBoundingClientRect();
+  const contentBounds = main.getBoundingClientRect();
+  header.style.paddingLeft = `${Math.max(0, contentBounds.left - bounds.left)}px`;
+  header.style.paddingRight = `${Math.max(0, bounds.right - contentBounds.right)}px`;
+}
+
 
 function shellTemplate() {
   const cfg = pages[page];

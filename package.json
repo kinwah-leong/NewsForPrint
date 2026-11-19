@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dashboard": "node scripts/serve-dashboard.mjs",
-    "fetch-apps": "node scripts/fetch-app-updates.mjs"
+    "fetch-apps": "node scripts/fetch-app-updates.mjs",
+    "archive-event": "node scripts/append-history-event.mjs"
   }
 }

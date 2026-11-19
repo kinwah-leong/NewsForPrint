@@ -1,12 +1,12 @@
 const data = window.NEWS_TIME_DATA;
 const page = document.body.dataset.page || "overview";
-const state = { filter: "all", freshness: "latest", query: "", appFilter: "all" };
+const state = { filter: "all", freshness: "latest", query: "", appFilter: "all", historyQuery: "" };
 const asOfDate = parseISODate(data.asOf);
 
 const pages = {
   overview: { file: "overview.html", label: "热点", eyebrow: "DAILY BRIEF · 11月18日", title: "热点", desc: "集中查看近期最值得关注的竞品更新、功能变化和产品信号。所有信息均保留首次公开日期、官方原文与来源。" },
   trends: { file: "trends.html", label: "趋势研判", eyebrow: "ANALYST SYNTHESIS", title: "趋势研判", desc: "基于两条以上独立证据形成产品方向判断。研判不是官方原话，页面会同时显示置信度与证据链接。" },
-  products: { file: "products.html", label: "功能玩法推荐", eyebrow: "FEATURE & PLAY PATTERNS", title: "功能玩法推荐", desc: "从近期官方更新和新品中提炼可借鉴的用户玩法，展示完整操作链路、适用场景、产品价值与原始证据。" },
+  products: { file: "products.html", label: "功能玩法推荐", eyebrow: "FEATURE & PLAY PATTERNS", title: "功能玩法推荐", desc: "从打印竞品与跨行业创作工具中提炼可借鉴玩法，重点观察文生图、图生图、可控编辑与内容再创作。所有案例均保留官方证据。" },
   hardware: { file: "hardware.html", label: "硬件新品与更新", eyebrow: "HARDWARE LAUNCHES · 90 DAYS", title: "硬件新品与产品更新", desc: "收录近90天可由官方来源核验的硬件发布与产品更新。传统大厂仅跟踪硬件，不分析配套软件。" },
   technology: { file: "technology.html", label: "技术参数与路线", eyebrow: "TECHNOLOGY BENCHMARK", title: "技术参数与技术路线", desc: "把新品信息拆成可比较的打印技术、分辨率、速度、尺寸、介质和产品结构；官方未披露的参数明确标记，不用推测值补齐。" },
   intelligence: { file: "intelligence.html", label: "专利／认证／供应链", eyebrow: "IP · CERTIFICATION · SUPPLY CHAIN", title: "专利／认证／供应链", desc: "监控技术布局、上市前认证与关键供应变化。仅在申请人、产品或证书主体能够核验时进入正式情报池。" },
@@ -30,6 +30,15 @@ const recentPlayPatterns = [
   { evidenceId: "cricut-dtf-upscaler-1011", scene: "图片编辑 / 打印预检", title: "发现低清图片后直接一键增强再打印", flow: ["上传图片", "检测分辨率", "Boost Resolution", "继续制作"], why: "用户不用先离开打印软件寻找修图工具，图片质量判断和修复被嵌入打印前流程。" },
   { evidenceId: "hanin-multi-reference-ai", scene: "AI照片 / 人像创作", title: "用多张参考图生成并比较多个人像结果", flow: ["选择多张参考图", "设置生成数量", "生成背景", "批量保存结果"], why: "AI照片从一次生成升级为可比较、可挑选的批量创作，更接近真实照片消费决策。" },
   { evidenceId: "aiyin-ai-community-ar", scene: "热敏Mini / 内容社区", title: "AI画板创作后打印，再进入社区分享", flow: ["AI画板或涂鸦", "生成/编辑内容", "打印作品", "社区或AR展示"], why: "玩法从单机打印扩展到创作—输出—分享链路，内容供给和社区互动开始成为产品能力。" }
+];
+
+const crossIndustryPlayPatterns = [
+  { date: "2026-11-04", app: "ChatGPT Images 2.6", mode: "图生图 / 动效", scene: "品牌内容", title: "把品牌角色或产品图直接变成可分享 GIF", flow: ["上传角色或产品图", "描述动作与节奏", "生成短动效", "继续修改或分享"], why: "静态品牌资产可以快速变成社媒反应图、故事板和轻量营销素材；对贴纸角色、IP内容和产品教学都具备迁移价值。", sourceLabel: "OpenAI 官方发布", source: "https://openai.com/index/introducing-images-2-6/" },
+  { date: "2026-09-08", app: "ChatGPT Images 2.5", mode: "图生图 / 多轮编辑", scene: "人物与商品一致性", title: "多轮改图时持续保留人物、产品和品牌特征", flow: ["上传参考图", "指定局部变化", "连续多轮调整", "导出系列素材"], why: "把一次性生成变成连续创作流程。适合生成同一人物、商品或包装在不同场景中的系列内容，减少每轮重做。", sourceLabel: "OpenAI 官方发布", source: "https://openai.com/index/introducing-chatgpt-images-2-5/" },
+  { date: "2026-09-08", app: "ChatGPT", mode: "草图生图", scene: "低门槛表达", title: "随手画草图，再用文字把构图完善成成品", flow: ["绘制简单草图", "补充文字意图", "生成完整画面", "圈选区域继续修改"], why: "让不擅长专业设计的用户也能先用草图表达版式和关系，可迁移到手账模板、标签布局、故事卡和儿童创作。", sourceLabel: "OpenAI 帮助中心", source: "https://help.openai.com/en/articles/11084440-chatgpt-images" },
+  { date: "2025-06-17", app: "Adobe Firefly", mode: "参考图控制", scene: "风格与构图复用", title: "分别引用风格和结构，批量生成受控视觉变体", flow: ["上传结构参考", "上传风格参考", "输入主题描述", "生成并筛选变体"], why: "把‘像这种风格’和‘保持这个构图’拆成两个控制维度，适合系列海报、包装、贴纸套系和活动主视觉。", sourceLabel: "Adobe 官方资料", source: "https://news.adobe.com/news/downloads/pdfs/2025/06/firefly-pr-6-17-25-5-1.pdf" },
+  { date: "2025-01-01", app: "Canva Magic Studio", mode: "图生图 / 元素重组", scene: "快速版式再创作", title: "把照片主体变成可移动元素，再增删或替换画面内容", flow: ["上传图片", "Magic Grab 分离主体", "移动或改版", "Magic Edit 增删元素"], why: "用户无需专业抠图就能重新组织视觉层级，适合社媒配图、拼贴、商品卡片和打印前版式调整。", sourceLabel: "Canva 官方说明", source: "https://www.canva.com/newsroom/news/magic-studio/" },
+  { date: "2025-01-01", app: "Photoroom", mode: "商品图批量生成", scene: "电商与产品展示", title: "同一商品图批量换场景、换颜色并生成模特展示", flow: ["上传商品图", "去背景或选择AI场景", "换色/生成模特", "批量输出多版本"], why: "把去背景、商品布景和多版本导出串成业务流程，可借鉴为耗材展示、定制商品预览和小商家营销工具。", sourceLabel: "Photoroom 官方帮助", source: "https://help.photoroom.com/en/articles/16098639-use-ai-tools-to-generate-images-in-the-product-editor-web-app" }
 ];
 
 document.querySelector("#app").innerHTML = shellTemplate();
@@ -58,10 +67,10 @@ function shellTemplate() {
       <div class="sidebar-foot"><span><i></i>数据监控运行中</span><small>数据截点：${data.asOf}</small><a href="../docs/data-quality.md">数据质量规则 →</a></div>
     </aside>
     <div class="workspace">
-      <header class="workspace-header"><button class="menu-toggle" id="menuToggle" type="button">☰</button><div><p class="eyebrow">PRODUCT INTELLIGENCE</p><h1>${cfg.label}</h1></div><label class="global-search"><span>⌕</span><input id="searchInput" type="search" placeholder="搜索当前模块" /><kbd>/</kbd></label></header>
+      <header class="workspace-header"><button class="menu-toggle" id="menuToggle" type="button">☰</button><div><p class="eyebrow">PRODUCT INTELLIGENCE</p><h1>${cfg.label}</h1></div><div class="header-actions"><label class="global-search"><span>⌕</span><input id="searchInput" type="search" placeholder="搜索当前模块" /><kbd>/</kbd></label><button class="history-open" id="historyOpen" type="button"><span>↶</span>历史回顾</button></div></header>
       <main class="page-main"><div class="page-hero"><div><p class="eyebrow">${cfg.eyebrow}</p><h2>${cfg.title}</h2><p class="page-hero-copy">${cfg.desc}</p></div>${metricsTemplate()}</div><div class="page-content" id="pageContent"></div></main>
       <footer><span>NewsTime · 打印行业产品情报试行版</span><span>数据范围：公开商店、官网、帮助中心、公开社媒与Kickstarter</span></footer>
-    </div></div>`;
+    </div><div class="history-backdrop" id="historyBackdrop"></div><aside class="history-drawer" id="historyDrawer" aria-hidden="true"><div class="history-drawer-head"><div><p class="eyebrow">ARCHIVE</p><h2>${cfg.label} · 历史回顾</h2></div><button id="historyClose" type="button" aria-label="关闭历史回顾">×</button></div><p class="history-intro">当前模块曾监控到的记录均保留在这里。刷新只新增状态与快照，不覆盖旧记录。</p><label class="history-search"><span>⌕</span><input id="historySearch" type="search" placeholder="搜索历史标题、分类或来源" /></label><div class="history-summary" id="historySummary"></div><div class="history-list" id="historyList"></div></aside></div>`;
 }
 
 function navLink(key, icon, label, extra = "") {
@@ -72,7 +81,7 @@ function metricsTemplate() {
   const map = {
     overview: [[latestSignals().length, "14天有效信号"], [data.excludedActivity.length, "已降级活动"], [data.apps.length, "监控App"]],
     trends: [[data.playbook.length, "趋势判断"], [new Set(data.playbook.flatMap(x => x.evidenceIds)).size, "独立证据"], ["2+", "最低证据数"]],
-    products: [[recentPlayPatterns.length, "近期玩法"], [new Set(recentPlayPatterns.map(x=>x.scene)).size, "应用场景"], [recentPlayPatterns.length, "官方证据"]],
+    products: [[recentPlayPatterns.length + crossIndustryPlayPatterns.length, "玩法样本"], [crossIndustryPlayPatterns.length, "跨行业灵感"], [recentPlayPatterns.length + crossIndustryPlayPatterns.length, "官方证据"]],
     hardware: [[data.hardwareSignals.length, "硬件信号"], ["90", "默认天数"], [new Set(data.hardwareSignals.map(x => x.category)).size, "产品类型"]],
     technology: [[data.technologyProfiles.length, "已核验产品"], [new Set(data.technologyProfiles.map(x => x.route)).size, "技术路线"], [data.technologyProfiles.filter(x => x.formInnovation).length, "结构创新"]],
     intelligence: [[data.intelligenceEvents.length, "首批专利事件"], [data.intelligenceEntityCoverage.filter(x=>x.state==="found").length, "已覆盖主体"], [data.intelligenceEntityCoverage.length, "监控主体"]],
@@ -135,10 +144,12 @@ function renderTrends() {
 }
 
 function renderProducts() {
-  content.innerHTML = `<section class="play-pattern-section standalone"><div class="section-heading"><div><p class="eyebrow">RECENT USER PLAY PATTERNS</p><h2>用户最近出现了哪些新玩法</h2></div><p>仅整理近90天官方更新或产品发布中明确出现的用户操作链路。</p></div><div class="play-pattern-grid">${recentPlayPatterns.map(playPatternCard).join("")}</div></section>`;
+  content.innerHTML = `<section class="play-pattern-section standalone"><div class="section-heading"><div><p class="eyebrow">PRINT & COMPETITOR PATTERNS</p><h2>用户最近出现了哪些新玩法</h2></div><p>来自打印竞品近期官方更新，关注完整操作链路和可迁移价值。</p></div><div class="play-pattern-grid">${recentPlayPatterns.map(playPatternCard).join("")}</div></section><section class="play-pattern-section cross-industry-section"><div class="section-heading"><div><p class="eyebrow">TEXT-TO-IMAGE · IMAGE-TO-IMAGE</p><h2>跨行业 AI 图片玩法灵感</h2></div><p>不局限于打印场景；优先收录可转化为产品能力的文生图、图生图和可控编辑玩法。</p></div><div class="inspiration-grid">${crossIndustryPlayPatterns.map(inspirationCard).join("")}</div></section>`;
 }
 
 function playPatternCard(item) { const evidence=data.signals.find(x=>x.id===item.evidenceId); return `<article class="play-pattern-card"><div class="play-pattern-meta"><span>${item.scene}</span><time>${evidence.firstPublishedAt}</time></div><h3>${item.title}</h3><div class="play-flow">${item.flow.map((step,index)=>`<span>${step}${index<item.flow.length-1?"<i>→</i>":""}</span>`).join("")}</div><p>${item.why}</p><div class="play-pattern-source"><span>${evidence.app} · ${evidence.version}</span><a href="${evidence.source}" target="_blank">${evidence.evidence} · 查看原文</a></div></article>`; }
+
+function inspirationCard(item) { return `<article class="inspiration-card"><div class="inspiration-card-top"><span>${item.mode}</span><time>${item.date}</time></div><p class="inspiration-app">${item.app} · ${item.scene}</p><h3>${item.title}</h3><div class="play-flow">${item.flow.map((step,index)=>`<span>${step}${index<item.flow.length-1?"<i>→</i>":""}</span>`).join("")}</div><div class="inspiration-value"><strong>值得借鉴</strong><p>${item.why}</p></div><a href="${item.source}" target="_blank">${item.sourceLabel} · 查看原文 →</a></article>`; }
 
 function trackCard(t) { const apps=appsFor(t), signals=signalsFor(t); return `<a class="product-track" href="#${t.key}"><div class="product-track-head"><span>${t.filter?"核心产品线":"硬件拓展"}</span><b>查看详情 ↓</b></div><h3>${t.label}</h3><p>${t.focus}</p><dl><div><dt>监控 App</dt><dd>${apps.length||"—"}</dd></div><div><dt>有效信号</dt><dd>${t.filter?signals.length:data.crowdfundingProjects.filter(x=>x.track==="打印科技").length}</dd></div></dl></a>`; }
 function productDetail(t) { const apps=appsFor(t), signals=signalsFor(t); const latest=signals.sort((a,b)=>b.firstPublishedAt.localeCompare(a.firstPublishedAt))[0]; return `<article class="product-detail intelligence" id="${t.key}"><div class="product-identity"><p class="eyebrow">PRODUCT TRACK</p><h3>${t.label}</h3><p>${t.focus}</p><div class="product-detail-stats"><div><strong>${apps.length||"—"}</strong><span>监控App</span></div><div><strong>${t.filter?signals.length:data.hardwareSignals.length}</strong><span>有效信号</span></div></div></div><div><h4>主要竞品 / 监控对象</h4><ul>${(apps.length?apps.map(x=>x.name):["Kickstarter打印科技","品牌官方新品"]).map(x=>`<li>${x}</li>`).join("")}</ul><h4 class="detail-gap">重点能力维度</h4><ul>${t.watch.map(x=>`<li>${x}</li>`).join("")}</ul></div><div class="product-insight"><h4>当前产品判断</h4><p>${t.opportunity}</p><h4 class="detail-gap">最近有效信号</h4><p>${latest?`<a href="${latest.source}" target="_blank">${latest.title}</a><small>${latest.firstPublishedAt} · ${latest.app}</small>`:"当前缺少可核验的新功能信号，继续监控官方版本记录与硬件发布。"}</p></div></article>`; }
@@ -166,7 +177,43 @@ function setupCommonEvents() {
   document.addEventListener("keydown",e=>{if(e.key==="/"&&document.activeElement!==input){e.preventDefault();input.focus();}});
   document.querySelector("#menuToggle").onclick=()=>document.querySelector("#sidebar").classList.toggle("open");
   document.querySelectorAll(".side-nav a").forEach(x=>x.onclick=()=>document.querySelector("#sidebar").classList.remove("open"));
+  document.querySelector("#historyOpen").onclick=openHistory;
+  document.querySelector("#historyClose").onclick=closeHistory;
+  document.querySelector("#historyBackdrop").onclick=closeHistory;
+  document.querySelector("#historySearch").addEventListener("input",e=>{state.historyQuery=e.target.value.trim().toLowerCase();renderHistory();});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")closeHistory();});
+  if(new URLSearchParams(location.search).get("history")==="1")openHistory();
 }
+
+function openHistory(){document.body.classList.add("history-visible");document.querySelector("#historyDrawer").setAttribute("aria-hidden","false");renderHistory();}
+function closeHistory(){document.body.classList.remove("history-visible");document.querySelector("#historyDrawer").setAttribute("aria-hidden","true");}
+function renderHistory(){
+  const all=historyItemsForPage(page).sort((a,b)=>b.date.localeCompare(a.date));
+  const items=all.filter(x=>!state.historyQuery||`${x.title} ${x.summary} ${x.category} ${x.sourceLabel}`.toLowerCase().includes(state.historyQuery));
+  document.querySelector("#historySummary").innerHTML=`<strong>${items.length}</strong><span>条历史记录</span><small>完整记录 ${all.length} 条 · 数据截点 ${data.asOf}</small>`;
+  const groups=Object.groupBy?Object.groupBy(items,x=>x.date.slice(0,7)):items.reduce((acc,x)=>((acc[x.date.slice(0,7)]||=[]).push(x),acc),{});
+  document.querySelector("#historyList").innerHTML=items.length?Object.entries(groups).map(([month,records])=>`<section class="history-month"><h3>${month.replace("-","年")}月 <span>${records.length}</span></h3>${records.map(historyCard).join("")}</section>`).join(""):emptyState();
+}
+function historyCard(x){return `<article class="history-item"><div class="history-date"><time>${x.date.slice(5)}</time><span class="history-state ${x.statusKey}">${x.status}</span></div><div><p>${x.category}</p><h4>${x.title}</h4><div>${x.summary}</div>${x.source?`<a href="${x.source}" target="_blank">${x.sourceLabel||"查看原始来源"} →</a>`:""}</div></article>`;}
+function historyItemsForPage(key){
+  const signal=x=>historyItem(x.firstPublishedAt,x.title,x.summary,x.productType?productLabel(x.productType):(x.category||"行业信号"),x.source,x.evidence||x.sourceLabel,statusForDate(x.firstPublishedAt));
+  const maps={
+    overview:()=>[...data.signals.map(signal),...data.hardwareSignals.map(signal),...(data.excludedActivity||[]).map(x=>historyItem(x.firstPublishedAt||x.date||data.asOf,x.title||x.app||"已降级活动",x.reason||x.summary||"该记录已从当前热点降级，但仍保留在历史库。",x.category||"已降级",x.source,x.evidence||"原始来源",{label:"已降级",key:"downgraded"}))],
+    trends:()=>data.playbook.map(x=>historyItem(data.asOf,x.title,x.detail,"趋势研判",findEvidence(x.evidenceIds[0])?.source,"研判证据",{label:"当前研判",key:"current"})),
+    products:()=>[...recentPlayPatterns.map(x=>{const e=data.signals.find(s=>s.id===x.evidenceId);return historyItem(e.firstPublishedAt,x.title,x.why,x.scene,e.source,e.evidence,statusForDate(e.firstPublishedAt));}),...crossIndustryPlayPatterns.map(x=>historyItem(x.date,x.title,x.why,`${x.mode} · ${x.app}`,x.source,x.sourceLabel,statusForDate(x.date)))],
+    hardware:()=>data.hardwareSignals.map(signal),
+    technology:()=>data.technologyProfiles.map(x=>historyItem(dateFromText(x.launch),`${x.brand} ${x.product}`,`${x.positioning}；${x.formInnovation||"未发现明确结构创新"}`,x.route,x.source,x.sourceLabel,statusForDate(dateFromText(x.launch)))),
+    intelligence:()=>data.intelligenceEvents.map(x=>historyItem(x.publicationDate,x.title,x.summary,`${x.type} · ${x.category}`,x.source,"专利原文与著录信息",statusForDate(x.publicationDate))),
+    apps:()=>data.apps.map(x=>historyItem(x.latestDate,`${x.name} ${x.version}`,x.latestNotes,x.category,x.source,"官方商店记录",statusForDate(x.latestDate))),
+    ai:()=>data.aiHardwareProducts.map(signal),
+    sources:()=>data.aiHardwareSources.map(x=>historyItem(data.asOf,x.name,`${x.focus}；${x.examples}`,x.tier,x.url,"打开网站",{label:"来源基线",key:"baseline"})),
+    crowdfunding:()=>data.crowdfundingProjects.map(x=>historyItem(x.signalDate,x.originalTitle,x.valueAnalysis,`${x.track} · ${x.category}`,x.source,"Kickstarter项目原文",x.state==="live"?{label:"众筹中",key:"current"}:{label:"已结束",key:"archived"}))
+  };
+  return maps[key]?maps[key]():[];
+}
+function historyItem(date,title,summary,category,source,sourceLabel,status){return{date:date||data.asOf,title:title||"未命名记录",summary:summary||"暂无摘要",category:category||"未分类",source,sourceLabel,status:status.label,statusKey:status.key};}
+function statusForDate(date){const days=ageInDays(date);return days<=90?{label:"当前",key:"current"}:{label:"已归档",key:"archived"};}
+function dateFromText(value){const found=String(value||"").match(/20\d{2}-\d{2}-\d{2}/);return found?found[0]:data.asOf;}
 
 function latestSignals(){return data.signals.filter(x=>ageInDays(x.firstPublishedAt)<=data.freshnessRules.latestDays);}
 function appMatchesTab(app,key){if(key==="all")return true;const value=`${app.category} ${app.name}`.toLowerCase();const terms={tattoo:["纹身","tattoo"],a4:["a4"],mini:["mini"],sticker:["贴纸","标签","label"],image:["照片","图片","photo","打印切割"]}[key]||[];return terms.some(term=>value.includes(term));}

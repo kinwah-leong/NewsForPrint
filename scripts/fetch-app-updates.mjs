@@ -1,10 +1,12 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { appendFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const root = process.cwd();
 const configPath = path.join(root, "config", "competitor-apps.json");
 const dataDir = path.join(root, "data", "app-updates");
 const reportDir = path.join(root, "reports");
+const historyDir = path.join(root, "data", "history");
+const historyPath = path.join(historyDir, "events.ndjson");
 const latestPath = path.join(dataDir, "latest.json");
 
 const config = JSON.parse(await readFile(configPath, "utf8"));
@@ -69,6 +71,7 @@ for (const app of config.apps) {
 
 await mkdir(dataDir, { recursive: true });
 await mkdir(reportDir, { recursive: true });
+await mkdir(historyDir, { recursive: true });
 await writeFile(latestPath, `${JSON.stringify(current, null, 2)}\n`, "utf8");
 await writeFile(
   path.join(dataDir, `${generatedAt.replaceAll(":", "-")}.json`),
@@ -80,6 +83,34 @@ await writeFile(
   renderReport({ generatedAt, changes, failures }),
   "utf8"
 );
+for (const change of changes) {
+  await appendHistoryEvent({
+    id: `app-store:${change.after.key}:${change.after.version ?? "unknown"}:${change.after.releasedAt ?? generatedAt}`,
+    module: "apps",
+    type: change.before ? "version_changed" : "first_observed",
+    firstPublishedAt: change.after.releasedAt,
+    discoveredAt: generatedAt,
+    checkedAt: generatedAt,
+    status: "current",
+    title: `${change.after.configuredName} ${change.after.version ?? "未知版本"}`,
+    source: change.after.appStoreUrl,
+    summary: change.after.releaseNotes ?? "商店未提供具体更新说明。",
+    payload: change
+  });
+}
+for (const failure of failures) {
+  await appendHistoryEvent({
+    id: `app-store:${failure.key}:failure:${generatedAt}`,
+    module: "apps",
+    type: "collection_failed",
+    discoveredAt: generatedAt,
+    checkedAt: generatedAt,
+    status: "collection_failed",
+    title: `${failure.name} 抓取失败`,
+    summary: failure.error,
+    payload: failure
+  });
+}
 
 console.log(`Checked ${Object.keys(current.apps).length} apps.`);
 console.log(`Detected ${changes.length} new or changed versions.`);
@@ -103,6 +134,10 @@ async function readJson(filePath, fallback) {
     if (error.code === "ENOENT") return fallback;
     throw error;
   }
+}
+
+async function appendHistoryEvent(event) {
+  await appendFile(historyPath, `${JSON.stringify({ schemaVersion: 1, ...event })}\n`, "utf8");
 }
 
 function renderReport({ generatedAt, changes, failures }) {
